@@ -56,15 +56,22 @@ const Skills = () => {
     prevArrow: <PrevArrow />,
     responsive: [
       {
-        breakpoint: 768,
+        breakpoint: 1024, // Tablet
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768, // Medium devices like tablets
         settings: {
           slidesToShow: 2,
         },
       },
       {
-        breakpoint: 480,
+        breakpoint: 480, // Mobile
         settings: {
           slidesToShow: 1,
+          dots: false, // Disable dots on mobile
         },
       },
     ],
@@ -91,7 +98,7 @@ const Skills = () => {
       name="skills"
       className="w-full h-screen text-[#0a192f] bg-[#f5f5f5] font-sans overflow-hidden">
       <div className="w-full h-full flex flex-col items-center justify-center p-4">
-        <div className="max-w-[1000px] w-full mb-4  ">
+        <div className="max-w-[1000px] w-full mb-4">
           <p className="text-4xl font-bold inline border-b-4 border-[#C23B22] mb-8">Skills</p>
         </div>
 
@@ -110,9 +117,9 @@ const Skills = () => {
                   <img
                     src={skill.img}
                     alt={`${skill.name} icon`}
-                    className="w-20 h-20 mx-auto mb-4"
+                    className="w-20 h-20 mx-auto mb-4 sm:w-16 sm:h-16 lg:w-20 lg:h-20" // Adjust image size for mobile (16 for small devices)
                   />
-                  <p className="text-lg font-semibold text-white text-center">{skill.name}</p>
+                  <p className="text-lg font-semibold text-white text-center sm:text-sm">{skill.name}</p> {/* Adjust text size for mobile */}
                 </div>
               </div>
             ))}
@@ -124,3 +131,15 @@ const Skills = () => {
 };
 
 export default Skills;
+
+// Custom CSS for dot positioning on mobile
+const style = document.createElement('style');
+style.innerHTML = `
+  /* Hide dots on mobile screens */
+  @media (max-width: 480px) {
+    .slick-dots {
+      display: none !important; /* Hide dots completely on mobile */
+    }
+  }
+`;
+document.head.appendChild(style);
