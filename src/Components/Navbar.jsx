@@ -5,7 +5,7 @@ import { MdEmail } from 'react-icons/md';
 import { BsFillFileEarmarkPersonFill } from 'react-icons/bs';
 import { Link } from 'react-scroll';
 import AnimatedText from './AnimatedText';
-import PDF from '../asset/CVRoby.pdf';
+import PDF from '../asset/RobyCV.pdf';
 
 const Navbar = () => {
   const [navView, setNavView] = useState(false);

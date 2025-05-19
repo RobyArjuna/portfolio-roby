@@ -33,9 +33,9 @@ const About = () => {
             data-aos="fade-up"
             data-aos-duration="1000">
             <p className="text-[#2F3645]">
-              Saat ini, saya fokus pada pengembangan perangkat lunak dengan mempelajari metodologi Agile menggunakan kerangka Scrum untuk meningkatkan efektivitas tim dan proyek. Saya juga menerapkan prinsip Clean Code untuk memastikan kode
-              yang saya tulis dapat dipelihara dan mudah dipahami, serta menggunakan Design Patterns untuk mengatasi masalah arsitektur perangkat lunak yang kompleks. Selain itu, saya terus mengembangkan keterampilan di berbagai teknologi
-              seperti Mobile Programming dengan Flutter dan React Native, Frontend dengan React.js dan Next.js, serta Backend dengan Node.js dan Django.
+              Saat ini, saya fokus pada pengembangan perangkat lunak dengan mempelajari metodologi Waterfall dan Agile menggunakan framework Scrum untuk meningkatkan efektivitas tim dan kelancaran proyek. Saya menerapkan prinsip Clean Code
+              untuk memastikan kode yang saya tulis mudah dipelihara dan dipahami, serta menggunakan Design Patterns untuk menyelesaikan masalah arsitektur perangkat lunak yang kompleks. Selain itu, saya terus mengembangkan keterampilan di
+              berbagai teknologi seperti Frontend dengan React.js dan Next.js, Backend menggunakan Laravel dan PHP, serta bidang machine learning dengan YOLOv8 dan data analysis menggunakan Metabase.
             </p>
           </div>
         </div>
