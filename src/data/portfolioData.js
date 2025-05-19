@@ -41,11 +41,11 @@ const portfolioData = [
     siteUrl: 'https://mealty.agileteknik.com/',
   },
   {
-    id: '11',
+    id: '12',
     imgUrl: Kammari,
     title: 'Kammari — a simple and efficient web-based Point of Sales application.',
     description:
-      '      Kammari is a web-based Point of Sales (POS) application built with Laravel, a powerful PHP framework. Designed for simplicity and efficiency, Kammari helps businesses manage sales, inventory, and customer data seamlessly. Leveraging Laravel’s robust features, it ensures security, scalability, and easy maintenance. Perfect for small to medium businesses looking for a reliable and modern POS solution powered by Laravel.',
+      'Kammari is a web-based Point of Sales (POS) application built with Laravel, a powerful PHP framework. Designed for simplicity and efficiency, Kammari helps businesses manage sales, inventory, and customer data seamlessly. Leveraging Laravel’s robust features, it ensures security, scalability, and easy maintenance. Perfect for small to medium businesses looking for a reliable and modern POS solution powered by Laravel.',
     tech: ['Laravel'],
     siteUrl: 'https://github.com/RobyArjuna/kammari-project',
   },
