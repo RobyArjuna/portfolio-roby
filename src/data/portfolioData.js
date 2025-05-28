@@ -3,7 +3,7 @@ import WebMealtyPic from '../asset/projects/mealty_web.png';
 import ToeflPensPic from '../asset/projects/toefl_pens.jpg';
 import SiSabi from '../asset/projects/sisabi.png';
 import Kammari from '../asset/projects/kammari.png';
-import MachineLearning from '../asset/projects/machine_learning.png';
+import MachineLearning from '../asset/projects/machine_learning.jpg';
 
 const portfolioData = [
   {
