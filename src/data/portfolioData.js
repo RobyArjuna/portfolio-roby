@@ -3,6 +3,8 @@ import WebMealtyPic from '../asset/projects/mealty_web.png';
 import ToeflPensPic from '../asset/projects/toefl_pens.jpg';
 import SiSabi from '../asset/projects/sisabi.png';
 import Kammari from '../asset/projects/kammari.png';
+import MachineLearning from '../asset/projects/machine_learning.png';
+
 const portfolioData = [
   {
     id: '08',
@@ -48,6 +50,15 @@ const portfolioData = [
       'Kammari is a web-based Point of Sales (POS) application built with Laravel, a powerful PHP framework. Designed for simplicity and efficiency, Kammari helps businesses manage sales, inventory, and customer data seamlessly. Leveraging Laravel’s robust features, it ensures security, scalability, and easy maintenance. Perfect for small to medium businesses looking for a reliable and modern POS solution powered by Laravel.',
     tech: ['Laravel'],
     siteUrl: 'https://github.com/RobyArjuna/kammari-project',
+  },
+  {
+    id: '13',
+    imgUrl: MachineLearning,
+    title: 'Object Detection — a real-time object detection system with custom dataset.',
+    description:
+      'This project is a real-time object detection system built using Python, YOLO (You Only Look Once), and OpenCV. It utilizes a custom-trained YOLO model with a tailored dataset to detect specific objects in images and video streams. Designed for accuracy and speed, the system processes frames in real-time while ensuring reliable detection performance. Ideal for applications in surveillance, monitoring, or smart automation solutions.',
+    tech: ['Python', 'YOLO', 'OpenCV', 'NumPy'],
+    siteUrl: 'https://machinelearning.meetaza.com/',
   },
 ];
 
