@@ -7,7 +7,6 @@ import { Link } from 'react-scroll';
 import { useInView } from 'react-intersection-observer';
 import myPhoto from '../asset/noformal.png';
 
-// Simple typing effect component
 const TypingEffect = ({ texts, speed = 150, pause = 1500 }) => {
   const [displayText, setDisplayText] = useState('');
   const [index, setIndex] = useState(0);
