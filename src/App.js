@@ -40,7 +40,7 @@ function App() {
       <Navbar />
 
       {/* Main Structural Wrapper */}
-      <main className="max-w-container-max mx-auto px-grid-margin relative z-10">
+      <main className="max-w-container-max mx-auto px-grid-margin relative">
         <Home />
         <About />
         <Work />

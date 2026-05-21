@@ -58,7 +58,7 @@ const Home = () => {
     <section
       id="intro"
       name="home"
-      className="min-h-[921px] flex flex-col md:flex-row items-center justify-between pt-28 pb-12 gap-12 reveal"
+      className="min-h-fit md:min-h-[65vh] flex flex-col md:flex-row items-center justify-between pt-4 pb-12 md:pt-6 gap-12 reveal"
     >
       {/* Left Column: Text & CTAs */}
       <div className="flex-1 flex flex-col items-start text-left">
@@ -83,12 +83,12 @@ const Home = () => {
         </h2>
 
         {/* Summary Description */}
-        <p className="text-body-lg text-on-surface-variant mb-12 max-w-xl leading-relaxed">
+        <p className="text-body-lg text-on-surface-variant mb-8 max-w-xl leading-relaxed">
           Architecting scalable digital experiences through precision engineering, dynamic integrations, and human-centered design principles.
         </p>
 
         {/* Buttons / CTAs */}
-        <div className="flex flex-wrap gap-4 mb-8">
+        <div className="flex flex-wrap gap-4 mb-6">
           <Link
             to="projects"
             smooth={true}

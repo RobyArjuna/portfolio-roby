@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { supabase } from '../supabaseClient';
 import { FaTimes, FaGithub } from 'react-icons/fa';
 import { FiExternalLink } from 'react-icons/fi';
@@ -34,17 +35,18 @@ const ShowCard = ({ activeId, setShowCard, skills = [] }) => {
   }, [activeId]);
 
   if (loading) {
-    return (
+    return createPortal(
       <div className="w-full h-screen fixed inset-0 z-[150] bg-background/85 backdrop-blur-md flex items-center justify-center font-body-md">
         <div className="text-primary text-xl font-headline-md tracking-wide animate-pulse">
           Retrieving details...
         </div>
-      </div>
+      </div>,
+      document.body
     );
   }
 
   if (errorMsg) {
-    return (
+    return createPortal(
       <div className="w-full h-screen fixed inset-0 z-[150] bg-background/85 backdrop-blur-md flex flex-col items-center justify-center font-body-md gap-4">
         <div className="text-status-error text-xl font-headline-md">{errorMsg}</div>
         <button
@@ -53,7 +55,8 @@ const ShowCard = ({ activeId, setShowCard, skills = [] }) => {
         >
           Close Panel
         </button>
-      </div>
+      </div>,
+      document.body
     );
   }
 
@@ -64,10 +67,10 @@ const ShowCard = ({ activeId, setShowCard, skills = [] }) => {
     ? project.tech
     : project.tech?.split(',').map((t) => t.trim()) || [];
 
-  return (
-    <div className="w-full h-screen fixed inset-0 z-[150] bg-[#030e21]/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+  return createPortal(
+    <div className="w-full h-screen fixed inset-0 z-[150] bg-[#030e21]/80 backdrop-blur-md flex justify-center items-start p-4 overflow-y-auto py-8 sm:py-12">
       {/* Modal Container */}
-      <div className="glass-panel max-w-[800px] w-full mx-auto rounded-2xl p-6 sm:p-8 overflow-y-auto max-h-[90vh] relative border border-glass-border shadow-2xl animate-in fade-in zoom-in-95 duration-300">
+      <div className="glass-panel max-w-[800px] w-full mx-auto rounded-2xl p-6 sm:p-8 relative border border-glass-border shadow-2xl animate-in fade-in zoom-in-95 duration-300">
         
         {/* Close Button */}
         <button
@@ -164,7 +167,8 @@ const ShowCard = ({ activeId, setShowCard, skills = [] }) => {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
