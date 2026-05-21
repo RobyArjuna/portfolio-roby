@@ -2,185 +2,201 @@ import React, { useState, useEffect } from 'react';
 import { FaBars, FaTimes, FaGithub, FaLinkedin } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { BsFillFileEarmarkPersonFill } from 'react-icons/bs';
-import { FaAddressBook } from 'react-icons/fa6';
 import { Link } from 'react-scroll';
-import AnimatedText from './AnimatedText';
-import { supabase } from '../supabaseClient'; // IMPORT SUPABASE CLIENT
+import { supabase } from '../supabaseClient';
 
 const Navbar = () => {
   const [navView, setNavView] = useState(false);
-  const [showSocial, setShowSocial] = useState(false);
-  const [siteConfig, setSiteConfig] = useState(null); // State untuk konfigurasi
+  const [siteConfig, setSiteConfig] = useState(null);
 
   useEffect(() => {
-    // Ambil data konfigurasi dari Supabase
     async function getConfig() {
-      const { data, error } = await supabase.from('site_config').select('*').single(); // Ambil satu baris konfigurasi saja
-
+      const { data, error } = await supabase.from('site_config').select('*').single();
       if (error) {
-        console.error('Error mengambil konfigurasi situs:', error);
+        console.error('Error fetching site configuration:', error);
       } else {
         setSiteConfig(data);
       }
     }
-
     getConfig();
   }, []);
 
   const handleNav = () => setNavView(!navView);
-  const toggleSocial = () => setShowSocial(!showSocial);
 
   return (
-    <div className="fixed w-full h-[80px] flex justify-between items-center px-4 bg-white text-black z-10 font-sans">
-      {/* Logo / Animated Text */}
-      <div className="flex items-center">
-        <AnimatedText />
-      </div>
+    <nav className="sticky top-0 w-full z-[100] bg-glass-surface/60 backdrop-blur-[20px] border-b border-glass-border shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]">
+      <div className="flex justify-between items-center max-w-container-max mx-auto px-grid-margin py-4">
+        {/* Brand Logo */}
+        <div className="text-body-lg font-headline-lg tracking-tighter text-primary dark:text-primary-fixed cursor-pointer">
+          <Link to="intro" smooth={true} duration={1000}>
+            Roby Arjuna
+          </Link>
+        </div>
 
-      {/* Desktop Menu */}
-      <ul className="hidden md:flex space-x-8">
-        {['home', 'about', 'skills', 'work', 'contact'].map((item) => (
-          <li
-            key={item}
-            className="relative group cursor-pointer">
-            <Link
-              activeClass="active"
-              to={item}
-              smooth={true}
-              duration={1000}>
-              {item.charAt(0).toUpperCase() + item.slice(1)}
-            </Link>
-            <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#C23B22] transition-all duration-300 group-hover:w-full"></span>
-          </li>
-        ))}
-      </ul>
+        {/* Desktop Menu */}
+        <div className="hidden md:flex gap-8 items-center">
+          <Link
+            activeClass="text-primary-container font-bold"
+            className="nav-link text-on-surface-variant hover:text-primary transition-all duration-300 text-label-caps font-label-caps cursor-pointer"
+            to="intro"
+            spy={true}
+            smooth={true}
+            duration={1000}
+          >
+            Intro
+          </Link>
+          <Link
+            activeClass="text-primary-container font-bold"
+            className="nav-link text-on-surface-variant hover:text-primary transition-all duration-300 text-label-caps font-label-caps cursor-pointer"
+            to="projects"
+            spy={true}
+            smooth={true}
+            duration={1000}
+          >
+            Projects
+          </Link>
+          <Link
+            activeClass="text-primary-container font-bold"
+            className="nav-link text-on-surface-variant hover:text-primary transition-all duration-300 text-label-caps font-label-caps cursor-pointer"
+            to="skills"
+            spy={true}
+            smooth={true}
+            duration={1000}
+          >
+            Skills
+          </Link>
+          <Link
+            activeClass="text-primary-container font-bold"
+            className="nav-link text-on-surface-variant hover:text-primary transition-all duration-300 text-label-caps font-label-caps cursor-pointer"
+            to="contact"
+            spy={true}
+            smooth={true}
+            duration={1000}
+          >
+            Contact
+          </Link>
+        </div>
 
-      {/* Hamburger Icon */}
-      <div
-        onClick={handleNav}
-        className="md:hidden z-20 text-[#C23B22] cursor-pointer">
-        {navView ? <FaTimes size={30} /> : <FaBars size={30} />}
+        {/* Decorative Tools */}
+        <div className="flex items-center gap-4 text-primary">
+          <a
+            href={siteConfig?.github_url || "https://github.com/robyarjuna"}
+            target="_blank"
+            rel="noreferrer"
+            className="material-symbols-outlined cursor-pointer hover:bg-aurora-cyan p-2 rounded-lg transition-all"
+            title="View Code"
+          >
+            code
+          </a>
+          <Link
+            to="contact"
+            smooth={true}
+            duration={1000}
+            className="material-symbols-outlined cursor-pointer hover:bg-aurora-cyan p-2 rounded-lg transition-all"
+            title="Open Console"
+          >
+            terminal
+          </Link>
+          {/* Mobile Menu Toggle Button */}
+          <div onClick={handleNav} className="md:hidden text-primary cursor-pointer ml-2">
+            {navView ? <FaTimes size={24} /> : <FaBars size={24} />}
+          </div>
+        </div>
       </div>
 
       {/* Mobile Menu */}
-      <ul className={navView ? 'absolute top-0 left-0 w-full h-screen bg-white flex flex-col justify-center items-center space-y-6 text-2xl font-semibold' : 'hidden'}>
-        {['home', 'about', 'skills', 'work', 'contact'].map((item) => (
-          <li key={item}>
-            <Link
-              onClick={handleNav}
-              to={item}
-              smooth={true}
-              duration={1000}>
-              {item.charAt(0).toUpperCase() + item.slice(1)}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div
+        className={`${
+          navView
+            ? 'opacity-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 -translate-y-10 pointer-events-none'
+        } absolute top-full left-0 w-full bg-[#071326]/95 backdrop-blur-[20px] border-b border-glass-border flex flex-col justify-center items-center py-8 space-y-6 text-xl font-semibold transition-all duration-300 z-50`}
+      >
+        <Link
+          onClick={handleNav}
+          className="text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer"
+          to="intro"
+          smooth={true}
+          duration={1000}
+        >
+          Intro
+        </Link>
+        <Link
+          onClick={handleNav}
+          className="text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer"
+          to="projects"
+          smooth={true}
+          duration={1000}
+        >
+          Projects
+        </Link>
+        <Link
+          onClick={handleNav}
+          className="text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer"
+          to="skills"
+          smooth={true}
+          duration={1000}
+        >
+          Skills
+        </Link>
+        <Link
+          onClick={handleNav}
+          className="text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer"
+          to="contact"
+          smooth={true}
+          duration={1000}
+        >
+          Contact
+        </Link>
+      </div>
 
-      {/* Desktop Social Icons */}
-      <div className="hidden lg:flex fixed flex-col top-[35%] left-0 z-50">
+      {/* Glassmorphic Floating Social Drawer (Desktop) */}
+      <div className="hidden lg:flex fixed flex-col top-[35%] left-0 z-50 select-none">
         <ul>
-          <li className="w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-0 duration-300 bg-[#171515]">
+          <li className="w-[140px] h-[50px] flex justify-between items-center ml-[-90px] hover:ml-0 duration-300 bg-glass-surface/85 backdrop-blur-md border border-glass-border rounded-r-lg hover:border-aurora-cyan">
             <a
               href={siteConfig?.github_url || '#'}
               target="_blank"
               rel="noreferrer"
-              className="flex justify-between items-center w-full text-gray-300 px-4">
-              Github <FaGithub size={30} />
+              className="flex justify-between items-center w-full text-[#d7e3fd] hover:text-primary-container px-4 font-label-code"
+            >
+              GitHub <FaGithub size={20} className="text-primary-container" />
             </a>
           </li>
 
-          <li className="w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-0 duration-300 bg-[#0A66C2]">
+          <li className="w-[140px] h-[50px] flex justify-between items-center ml-[-90px] hover:ml-0 duration-300 bg-glass-surface/85 backdrop-blur-md border border-glass-border rounded-r-lg hover:border-aurora-cyan mt-2">
             <a
               href={siteConfig?.linkedin_url || '#'}
               target="_blank"
               rel="noreferrer"
-              className="flex justify-between items-center w-full text-gray-300 px-4">
-              LinkedIn <FaLinkedin size={30} />
+              className="flex justify-between items-center w-full text-[#d7e3fd] hover:text-primary-container px-4 font-label-code"
+            >
+              LinkedIn <FaLinkedin size={20} className="text-primary-container" />
             </a>
           </li>
 
-          <li className="w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-0 duration-300 bg-[#BB001B]">
+          <li className="w-[140px] h-[50px] flex justify-between items-center ml-[-90px] hover:ml-0 duration-300 bg-glass-surface/85 backdrop-blur-md border border-glass-border rounded-r-lg hover:border-aurora-cyan mt-2">
             <a
               href={`mailto:${siteConfig?.email_address || ''}`}
-              className="flex justify-between items-center w-full text-gray-300 px-4">
-              Email <MdEmail size={30} />
+              className="flex justify-between items-center w-full text-[#d7e3fd] hover:text-primary-container px-4 font-label-code"
+            >
+              Email <MdEmail size={20} className="text-primary-container" />
             </a>
           </li>
 
-          <li className="w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-0 duration-300 bg-[#565f69]">
+          <li className="w-[140px] h-[50px] flex justify-between items-center ml-[-90px] hover:ml-0 duration-300 bg-glass-surface/85 backdrop-blur-md border border-glass-border rounded-r-lg hover:border-aurora-cyan mt-2">
             <a
               href={siteConfig?.resume_url || '#'}
-              download
               target="_blank"
               rel="noreferrer"
-              className="flex justify-between items-center w-full text-gray-300 px-4">
-              Resume <BsFillFileEarmarkPersonFill size={30} />
+              className="flex justify-between items-center w-full text-[#d7e3fd] hover:text-primary-container px-4 font-label-code"
+            >
+              Resume <BsFillFileEarmarkPersonFill size={20} className="text-primary-container" />
             </a>
           </li>
         </ul>
       </div>
-
-      {/* Mobile Floating Social Buttons */}
-      <div className="lg:hidden fixed bottom-6 right-6 z-50 flex flex-col items-end space-y-3">
-        {showSocial && (
-          <>
-            <a
-              href={siteConfig?.github_url || '#'}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center bg-[#171515] text-gray-300 px-4 py-2 rounded-full shadow-lg transition-all duration-300">
-              <FaGithub
-                size={20}
-                className="mr-2"
-              />{' '}
-              Github
-            </a>
-
-            <a
-              href={siteConfig?.linkedin_url || '#'}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center bg-[#0A66C2] text-gray-300 px-4 py-2 rounded-full shadow-lg transition-all duration-300">
-              <FaLinkedin
-                size={20}
-                className="mr-2"
-              />{' '}
-              LinkedIn
-            </a>
-
-            <a
-              href={`mailto:${siteConfig?.email_address || ''}`}
-              className="flex items-center bg-[#BB001B] text-gray-300 px-4 py-2 rounded-full shadow-lg transition-all duration-300">
-              <MdEmail
-                size={20}
-                className="mr-2"
-              />{' '}
-              Email
-            </a>
-
-            <a
-              href={siteConfig?.resume_url || '#'}
-              download
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center bg-[#565f69] text-gray-300 px-4 py-2 rounded-full shadow-lg transition-all duration-300">
-              <BsFillFileEarmarkPersonFill
-                size={20}
-                className="mr-2"
-              />{' '}
-              Resume
-            </a>
-          </>
-        )}
-
-        <button
-          onClick={toggleSocial}
-          className="bg-[#C23B22] text-white p-3 rounded-full shadow-lg focus:outline-none">
-          {showSocial ? <FaTimes /> : <FaAddressBook />}
-        </button>
-      </div>
-    </div>
+    </nav>
   );
 };
 

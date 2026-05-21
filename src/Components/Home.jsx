@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import { HiArrowNarrowRight } from 'react-icons/hi';
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { Link } from 'react-scroll';
-import { useInView } from 'react-intersection-observer';
+import { supabase } from '../supabaseClient';
 import myPhoto from '../asset/noformal.png';
 
 const TypingEffect = ({ texts, speed = 150, pause = 1500 }) => {
@@ -36,106 +34,123 @@ const TypingEffect = ({ texts, speed = 150, pause = 1500 }) => {
     return () => clearTimeout(timeout);
   }, [displayText, isDeleting, index, texts, speed, pause]);
 
-  return <span>{displayText}</span>;
+  return (
+    <span className="text-primary-container border-r-2 border-primary-container animate-pulse pr-1">
+      {displayText}
+    </span>
+  );
 };
 
 const Home = () => {
-  const [animate, setAnimate] = useState(false);
-  const { ref, inView } = useInView({
-    threshold: 0.7,
-    triggerOnce: false,
-  });
+  const [siteConfig, setSiteConfig] = useState(null);
 
   useEffect(() => {
-    AOS.init({ duration: 1000 });
+    async function getConfig() {
+      const { data, error } = await supabase.from('site_config').select('*').single();
+      if (!error && data) {
+        setSiteConfig(data);
+      }
+    }
+    getConfig();
   }, []);
 
-  useEffect(() => {
-    if (inView) {
-      setAnimate(true);
-    } else {
-      const timeout = setTimeout(() => setAnimate(false), 1000);
-      return () => clearTimeout(timeout);
-    }
-  }, [inView]);
-
   return (
-    <div
+    <section
+      id="intro"
       name="home"
-      className="w-full h-screen bg-[#F5F5F5] font-sans flex flex-col items-center justify-center px-4 sm:px-8"
-      ref={ref}>
-      <div className={`max-w-[1000px] mx-auto flex flex-row items-center justify-center space-y-0 h-full transition-all duration-1000 ${animate ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
-        <div className="flex justify-center w-1/3 md:w-1/2">
+      className="min-h-[921px] flex flex-col md:flex-row items-center justify-between pt-28 pb-12 gap-12 reveal"
+    >
+      {/* Left Column: Text & CTAs */}
+      <div className="flex-1 flex flex-col items-start text-left">
+        {/* Availability Badge */}
+        <div className="inline-block px-4 py-1.5 rounded-full border border-primary-container/30 bg-aurora-cyan text-primary-container text-label-code font-label-code mb-6 select-none animate-pulse">
+          🟢 AVAILABLE FOR NEW OPPORTUNITIES
+        </div>
+
+        {/* Name Heading */}
+        <h1 className="font-headline-lg text-display-lg-mobile md:text-display-lg text-primary tracking-tighter mb-4 leading-none select-none">
+          Roby Arjuna
+        </h1>
+
+        {/* Dynamic Typing Title */}
+        <h2 className="font-headline-md text-headline-md text-on-surface-variant mb-6 h-[40px] md:h-[48px] select-none">
+          I am a <TypingEffect texts={[
+            'Mobile Developer',
+            'Software Engineer',
+            'Web Developer',
+            'ML Enthusiast'
+          ]} />
+        </h2>
+
+        {/* Summary Description */}
+        <p className="text-body-lg text-on-surface-variant mb-12 max-w-xl leading-relaxed">
+          Architecting scalable digital experiences through precision engineering, dynamic integrations, and human-centered design principles.
+        </p>
+
+        {/* Buttons / CTAs */}
+        <div className="flex flex-wrap gap-4 mb-8">
+          <Link
+            to="projects"
+            smooth={true}
+            duration={1000}
+            className="btn-pulse px-8 py-4 bg-status-error text-white font-bold rounded-lg uppercase transition-transform hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-2 select-none"
+          >
+            View My Work <HiArrowNarrowRight />
+          </Link>
+          {siteConfig?.resume_url && (
+            <a
+              href={siteConfig.resume_url}
+              target="_blank"
+              rel="noreferrer"
+              className="px-8 py-4 border border-primary-container text-primary-container font-bold rounded-lg uppercase hover:bg-aurora-cyan transition-all active:scale-95 flex items-center select-none"
+            >
+              Download Resume
+            </a>
+          )}
+        </div>
+
+        {/* Quick Social Badges */}
+        <div className="flex gap-4 items-center">
+          <a
+            href={siteConfig?.github_url || "https://github.com/robyarjuna"}
+            target="_blank"
+            rel="noreferrer"
+            className="text-on-surface-variant hover:text-primary transition-all duration-300 p-2 bg-surface-container/50 rounded-full border border-glass-border hover:border-aurora-cyan"
+            aria-label="GitHub"
+          >
+            <FaGithub size={22} />
+          </a>
+          <a
+            href={siteConfig?.linkedin_url || "https://linkedin.com/in/robyarjuna"}
+            target="_blank"
+            rel="noreferrer"
+            className="text-on-surface-variant hover:text-primary transition-all duration-300 p-2 bg-surface-container/50 rounded-full border border-glass-border hover:border-aurora-cyan"
+            aria-label="LinkedIn"
+          >
+            <FaLinkedin size={22} />
+          </a>
+        </div>
+      </div>
+
+      {/* Right Column: Premium Glowing Avatar */}
+      <div className="flex-1 flex justify-center items-center relative select-none">
+        {/* Glow Spheres in Background */}
+        <div className="absolute w-72 h-72 bg-aurora-cyan rounded-full blur-[80px] -z-10 animate-pulse"></div>
+        <div className="absolute w-48 h-48 bg-status-error/10 rounded-full blur-[60px] -z-10 animate-bounce duration-[10s]"></div>
+
+        {/* Frame Container */}
+        <div className="relative p-3 rounded-full bg-glass-surface border border-glass-border shadow-2xl backdrop-blur-md hover:border-primary-container/40 transition-colors duration-500">
+          {/* Animated gradient ring */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary-container via-transparent to-status-error opacity-40 animate-spin duration-[20s] -z-10"></div>
+          
           <img
             src={myPhoto}
             alt="Roby Arjuna"
-            className="w-[160px] h-[160px] sm:w-[150px] sm:h-[150px] md:w-[200px] md:h-[200px] lg:w-[250px] lg:h-[250px] object-cover rounded-full"
+            className="w-[200px] h-[200px] sm:w-[250px] sm:h-[250px] md:w-[300px] md:h-[300px] object-cover rounded-full shadow-inner relative z-10"
           />
         </div>
-
-        <div className="w-2/3 md:w-1/2 text-center md:text-left pl-4 sm:pl-8">
-          <p
-            className="text-[#C23B22] font-bold text-base sm:text-xl"
-            data-aos="fade-left"
-            data-aos-duration="1000">
-            Hi, my name is
-          </p>
-          <h1
-            className="text-3xl sm:text-5xl md:text-6xl font-bold text-[#124076]"
-            data-aos="fade-right"
-            data-aos-duration="2000">
-            Roby Arjuna
-          </h1>
-          <h2
-            className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#295F98] mt-2"
-            data-aos="fade-down"
-            data-aos-duration="2500">
-            I am a <TypingEffect texts={['Web Developer!', 'Web Dev Enthusiast!', 'Problem Solver!', 'Tech Enthusiast!']} />
-          </h2>
-          <br />
-          <Link
-            activeClass="active"
-            to="work"
-            smooth={true}
-            duration={1000}>
-            <button
-              className="text-white group bg-[#295F98] border-2 border-[#295F98] px-4 py-2 my-2 flex items-center mx-auto md:mx-0 transition-all duration-300 ease-in-out hover:bg-[#C23B22] hover:border-[#C23B22] text-sm sm:text-base"
-              data-aos="fade-right"
-              data-aos-duration="1500"
-              data-aos-delay="800">
-              View My Work
-              <span className="ml-3 group-hover:ml-6 transition-all duration-300 ease-in-out">
-                <HiArrowNarrowRight />
-              </span>
-            </button>
-          </Link>
-
-          {/* Social Media Icons */}
-          <div
-            className="flex justify-center md:justify-start space-x-6 mt-6 text-[#295F98]"
-            data-aos="fade-up"
-            data-aos-duration="1500"
-            data-aos-delay="1000">
-            <a
-              href="https://github.com/robyarjuna"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="GitHub"
-              className="hover:text-[#C23B22] transition-colors duration-300">
-              <FaGithub size={30} />
-            </a>
-            <a
-              href="https://linkedin.com/in/robyarjuna"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="LinkedIn"
-              className="hover:text-[#C23B22] transition-colors duration-300">
-              <FaLinkedin size={30} />
-            </a>
-          </div>
-        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

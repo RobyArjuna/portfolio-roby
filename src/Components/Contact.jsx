@@ -1,113 +1,137 @@
-import React from 'react';
-import { HiArrowNarrowRight } from 'react-icons/hi';
-import { FaGithub, FaInstagramSquare, FaLinkedin } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../supabaseClient';
+import { handleCardMouseMove, handleCardMouseLeave } from '../utils/cardEffects';
 
 const Contact = () => {
+  const [siteConfig, setSiteConfig] = useState(null);
+
+  useEffect(() => {
+    async function getConfig() {
+      const { data, error } = await supabase.from('site_config').select('*').single();
+      if (!error && data) {
+        setSiteConfig(data);
+      }
+    }
+    getConfig();
+  }, []);
+
   return (
-    <div
-      name="contact"
-      className="w-full h-full bg-[#F5f5f5f5] flex flex-col justify-center items-center p-4 font-sans">
-      <form
-        action="https://getform.io/f/cba16026-2d63-491a-8ab8-33f0ea8cdcb6"
-        className="flex flex-col max-w-[600px] w-full"
-        method="POST">
-        <div className="pb-8">
-          <p className="text-4xl font-bold inline border-b-4 border-[#C23B22] text-[#0a192f]">Contact</p>
-          <p className="text-[#2F3645] py-4">Submit the form to get in touch with me</p>
+    <section id="contact" name="contact" className="mt-section-gap mb-20 relative select-none">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        
+        {/* Left Column: Let's Connect Info */}
+        <div className="reveal">
+          <h2 className="font-headline-lg text-headline-lg text-primary mb-6">Let's Connect</h2>
+          <p className="text-body-lg text-on-surface-variant mb-8 leading-relaxed">
+            Interested in collaboration or have a project in mind? Reach out and let's build something exceptional together.
+          </p>
+
+          <div className="space-y-6">
+            {/* Email Channel */}
+            <div className="flex items-center gap-4 group/item">
+              <div className="w-10 h-10 rounded-full bg-aurora-red flex items-center justify-center border border-status-error/20 group-hover/item:shadow-[0_0_12px_rgba(255,59,48,0.4)] transition-all">
+                <span className="material-symbols-outlined text-status-error text-xl">mail</span>
+              </div>
+              <a 
+                href={`mailto:${siteConfig?.email_address || 'robiarjunawijaya@gmail.com'}`}
+                className="text-body-md text-primary hover:text-[#00f2fe] transition-colors"
+              >
+                {siteConfig?.email_address || 'robiarjunawijaya@gmail.com'}
+              </a>
+            </div>
+
+            {/* Social Channels */}
+            <div className="flex items-center gap-4 group/item">
+              <div className="w-10 h-10 rounded-full bg-aurora-cyan flex items-center justify-center border border-primary-container/20 group-hover/item:shadow-[0_0_12px_rgba(0,242,254,0.4)] transition-all">
+                <span className="material-symbols-outlined text-primary-container text-xl">share</span>
+              </div>
+              <div className="flex gap-4">
+                <a
+                  className="text-primary hover:text-primary-container transition-colors font-semibold"
+                  href={siteConfig?.github_url || 'https://github.com/RobyArjuna'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                </a>
+                <span className="text-on-surface-variant">/</span>
+                <a
+                  className="text-primary hover:text-primary-container transition-colors font-semibold"
+                  href={siteConfig?.linkedin_url || 'https://www.linkedin.com/in/RobyArjuna'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-        <label
-          htmlFor="name"
-          className="text-[#2F3645]">
-          Name
-        </label>
-        <input
-          className="bg-gray-300 p-2"
-          type="text"
-          id="name"
-          name="name"
-          required
-        />
-        <label
-          htmlFor="email"
-          className="text-[#2F3645]">
-          Email
-        </label>
-        <input
-          className="my-4 p-2 bg-gray-300"
-          type="email"
-          id="email"
-          name="email"
-        />
-        <label
-          htmlFor="message"
-          className="text-[#2F3645]">
-          Your Message
-        </label>
-        <textarea
-          className="bg-gray-300 p-2"
-          name="message"
-          id="message"
-          placeholder="Your Message"
-          rows="10"></textarea>
 
-        <button
-          type="submit"
-          className="text-white group border-1 px-4 py-3 my-8 m-auto flex items-center bg-[#0a192f] hover:bg-[#C23B22] hover:border-[#C23B22] duration-300 font-sans">
-          Let's Connect
-          <span className="group-hover:ml-4 duration-300">
-            <HiArrowNarrowRight className="ml-4" />
-          </span>
-        </button>
-      </form>
-
-      <div className="flex flex-col text-center text-gray-300 my-5 py-5 justify-center items-center">
-        <div className="flex flex-row">
+        {/* Right Column: Secure Glassmorphic Form Panel */}
+        <form
+          action="https://getform.io/f/cba16026-2d63-491a-8ab8-33f0ea8cdcb6"
+          className="glass-panel p-8 rounded-2xl space-y-6 reveal border border-glass-border"
+          method="POST"
+          onMouseMove={handleCardMouseMove}
+          onMouseLeave={handleCardMouseLeave}
+        >
+          {/* Full Name Input */}
           <div>
-            <h5 className="text-2xl font-bold py-4 text-[#C23B22]">Contact Me</h5>
-            <span className="text-[#2F3645]">robiarjunawijaya@gmail.com</span>
+            <label htmlFor="name" className="block text-label-caps font-label-caps text-on-surface-variant mb-2 select-none tracking-wider">
+              FULL NAME
+            </label>
+            <input
+              className="w-full bg-transparent border-b border-glass-border focus:border-primary-container focus:ring-0 text-primary transition-all py-2 outline-none"
+              type="text"
+              id="name"
+              name="name"
+              placeholder="John Doe"
+              required
+            />
           </div>
-        </div>
 
-        <div className="flex flex-col">
-          <div className="mb-2">
-            <span className="text-[#2F3645]">followMe@</span>
-          </div>
-
-          <div className="flex flex-row px-4 gap-4 items-center justify-center">
-            <a
-              href="https://www.instagram.com/robyarjunaw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white bg-[#171515] p-2 rounded-full hover:bg-[#C23B22]"
-              aria-label="Instagram">
-              <FaInstagramSquare size={30} />
-            </a>
-            <a
-              href="https://github.com/RobyArjuna"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white bg-[#171515] p-2 rounded-full hover:bg-[#C23B22]"
-              aria-label="Github">
-              <FaGithub size={30} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/RobyArjuna"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white bg-[#171515] p-2 rounded-full hover:bg-[#C23B22]"
-              aria-label="LinkedIn">
-              <FaLinkedin size={30} />
-            </a>
-          </div>
-        </div>
-
-        <div className="mt-8 text-[#171515]">
+          {/* Email Input */}
           <div>
-            <span>Made with ❤️ by Roby Arjuna 😀</span>
+            <label htmlFor="email" className="block text-label-caps font-label-caps text-on-surface-variant mb-2 select-none tracking-wider">
+              EMAIL ADDRESS
+            </label>
+            <input
+              className="w-full bg-transparent border-b border-glass-border focus:border-primary-container focus:ring-0 text-primary transition-all py-2 outline-none"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="john@example.com"
+              required
+            />
           </div>
-        </div>
+
+          {/* Message TextArea */}
+          <div>
+            <label htmlFor="message" className="block text-label-caps font-label-caps text-on-surface-variant mb-2 select-none tracking-wider">
+              MESSAGE
+            </label>
+            <textarea
+              className="w-full bg-transparent border-b border-glass-border focus:border-primary-container focus:ring-0 text-primary transition-all py-2 outline-none resize-none"
+              name="message"
+              id="message"
+              placeholder="How can I help you?"
+              rows="4"
+              required
+            ></textarea>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-4 bg-primary-container text-on-primary font-bold rounded-lg uppercase shadow-[0_0_15px_rgba(0,242,254,0.4)] hover:scale-[1.02] active:scale-95 transition-all duration-300 font-label-code"
+          >
+            SEND MESSAGE
+          </button>
+        </form>
+
       </div>
-    </div>
+    </section>
   );
 };
 
