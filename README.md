@@ -2,6 +2,31 @@
 
 A highly dynamic, premium, and fully responsive developer portfolio built with **React.js** and **Tailwind CSS**, integrated with a **Supabase Real-time Database** for dynamic content delivery.
 
+<p align="center">
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+</p>
+
+---
+
+## 💻 Web Portfolio Tech Stack
+
+The core architecture of this portfolio is designed to be dynamic, real-time, and modern:
+
+* **Frontend Engine:** **React.js** (v18.3.1) bootstrapped via Create React App.
+* **Styling & Theme:** **Tailwind CSS** (v3.4.15) for responsive utilities, with custom **Cyber-Glassmorphism** styling (mesh auroras, dark-space themes `#050814`, and smooth neon glows).
+* **Database & Real-time BaaS:** **Supabase** for serving project, skills, and configuration data dynamically, utilizing **Supabase Realtime Channel** listeners for instantaneous UI synchronization.
+* **Animations:** 
+  * **AOS (Animate on Scroll):** Scroll-based entry transitions.
+  * **React Type Animation:** Dynamic typing subtitle effect.
+  * **React Intersection Observer:** Custom viewport trigger handlers.
+* **Navigation:** **React Scroll** for smooth page section transitions.
+* **Interactions & Components:** **React Slick** for premium image/project sliders, **React Icons** for modular typography assets.
+* **Form Handling:** Direct POST submission integration with **Getform.io**.
+
 ---
 
 # 👤 DEVELOPER PROFILE (CONTENT SPECS)
@@ -93,7 +118,7 @@ The contact form in `Contact.jsx` performs a POST request directly to:
 
 # 🚀 Developer Operations (How to Run)
 
-1. **Install dependecies**: `npm install`
+1. **Install dependencies**: `npm install`
 2. **Local Dev Server**: `npm start` (Runs on `http://localhost:3000`)
 3. **Production Build**: `npm run build`
 

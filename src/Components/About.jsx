@@ -16,9 +16,9 @@ const About = () => {
       >
         <div className="absolute top-0 left-0 w-32 h-32 bg-status-error/5 blur-3xl rounded-full"></div>
         <div>
-          <h3 className="font-headline-md text-headline-md text-primary mb-4">Hello World</h3>
+          <h3 className="font-headline-md text-headline-md text-primary mb-4">About Me</h3>
           <p className="text-body-md text-on-surface leading-relaxed font-semibold">
-            "Hi, I am <span className="text-primary-container">Roby Arjuna</span>! Nice to meet you. Please take a look around my works and experiences."
+            Hello! I am <span className="text-primary-container">Roby Arjuna Wijaya</span>, a developer focused on mobile development, web development, and software engineering.
           </p>
         </div>
         <div className="mt-8 text-label-code font-label-code text-on-surface-variant flex items-center gap-2">

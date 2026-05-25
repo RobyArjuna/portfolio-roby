@@ -9,6 +9,7 @@ import Work from './Components/Work';
 import ParticleBackground from './Components/ParticleBackground';
 import { initScrollReveal } from './utils/cardEffects';
 import { supabase } from './supabaseClient';
+import { AiChatWidget } from './ai';
 
 function App() {
   const [siteConfig, setSiteConfig] = React.useState(null);
@@ -83,6 +84,8 @@ function App() {
           </div>
         </div>
       </footer>
+
+      <AiChatWidget />
     </div>
   );
 }
