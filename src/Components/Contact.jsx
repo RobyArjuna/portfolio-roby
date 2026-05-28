@@ -29,12 +29,12 @@ const Contact = () => {
           <div className="space-y-6">
             {/* Email Channel */}
             <div className="flex items-center gap-4 group/item">
-              <div className="w-10 h-10 rounded-full bg-aurora-red flex items-center justify-center border border-status-error/20 group-hover/item:shadow-[0_0_12px_rgba(255,59,48,0.4)] transition-all">
+              <div className="w-10 h-10 rounded-full bg-aurora-red flex items-center justify-center border border-status-error/20 group-hover/item:shadow-[0_0_12px_rgba(194,65,12,0.3)] transition-all">
                 <span className="material-symbols-outlined text-status-error text-xl">mail</span>
               </div>
               <a 
                 href={`mailto:${siteConfig?.email_address || 'robiarjunawijaya@gmail.com'}`}
-                className="text-body-md text-primary hover:text-[#00f2fe] transition-colors"
+                className="text-body-md text-primary hover:text-primary-container transition-colors"
               >
                 {siteConfig?.email_address || 'robiarjunawijaya@gmail.com'}
               </a>
@@ -42,7 +42,7 @@ const Contact = () => {
 
             {/* Social Channels */}
             <div className="flex items-center gap-4 group/item">
-              <div className="w-10 h-10 rounded-full bg-aurora-cyan flex items-center justify-center border border-primary-container/20 group-hover/item:shadow-[0_0_12px_rgba(0,242,254,0.4)] transition-all">
+              <div className="w-10 h-10 rounded-full bg-aurora-cyan flex items-center justify-center border border-primary-container/20 group-hover/item:shadow-[0_0_12px_rgba(217,119,6,0.3)] transition-all">
                 <span className="material-symbols-outlined text-primary-container text-xl">share</span>
               </div>
               <div className="flex gap-4">
@@ -124,7 +124,7 @@ const Contact = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-4 bg-primary-container text-on-primary font-bold rounded-lg uppercase shadow-[0_0_15px_rgba(0,242,254,0.4)] hover:scale-[1.02] active:scale-95 transition-all duration-300 font-label-code"
+            className="w-full py-4 bg-primary-container text-on-primary font-bold rounded-lg uppercase shadow-[0_0_15px_rgba(217,119,6,0.3)] hover:scale-[1.02] active:scale-95 transition-all duration-300 font-label-code"
           >
             SEND MESSAGE
           </button>

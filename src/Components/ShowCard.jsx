@@ -68,7 +68,7 @@ const ShowCard = ({ activeId, setShowCard, skills = [] }) => {
     : project.tech?.split(',').map((t) => t.trim()) || [];
 
   return createPortal(
-    <div className="w-full h-screen fixed inset-0 z-[150] bg-[#030e21]/80 backdrop-blur-md flex justify-center items-start p-4 overflow-y-auto py-8 sm:py-12">
+    <div className="w-full h-screen fixed inset-0 z-[150] bg-background/80 backdrop-blur-md flex justify-center items-start p-4 overflow-y-auto py-8 sm:py-12">
       {/* Modal Container */}
       <div className="glass-panel max-w-[800px] w-full mx-auto rounded-2xl p-6 sm:p-8 relative border border-glass-border shadow-2xl animate-in fade-in zoom-in-95 duration-300">
         
@@ -150,7 +150,7 @@ const ShowCard = ({ activeId, setShowCard, skills = [] }) => {
               href={project.link_demo}
               target="_blank"
               rel="noreferrer"
-              className="px-6 py-3.5 bg-primary-container text-on-primary font-bold rounded-lg uppercase shadow-[0_0_15px_rgba(0,242,254,0.3)] hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 font-label-code text-sm"
+              className="px-6 py-3.5 bg-primary-container text-on-primary font-bold rounded-lg uppercase shadow-[0_0_15px_rgba(217,119,6,0.3)] hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 font-label-code text-sm"
             >
               Live Demo <FiExternalLink size={16} />
             </a>

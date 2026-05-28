@@ -54,7 +54,7 @@ function App() {
         <div className="flex flex-col md:flex-row justify-between items-center py-12 px-grid-margin max-w-container-max mx-auto gap-8">
           <div className="text-headline-md font-headline-md text-primary">Roby Arjuna</div>
           <div className="text-body-md font-body-md text-on-surface-variant text-center md:text-left">
-            © 2026 Roby Arjuna. Built with Cyber-Glass precision.
+            © 2026 Roby Arjuna.
           </div>
           <div className="flex gap-6 text-label-code font-label-code">
             <a 

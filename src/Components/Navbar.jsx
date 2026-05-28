@@ -110,7 +110,7 @@ const Navbar = () => {
           navView
             ? 'opacity-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 -translate-y-10 pointer-events-none'
-        } absolute top-full left-0 w-full bg-[#071326]/95 backdrop-blur-[20px] border-b border-glass-border flex flex-col justify-center items-center py-8 space-y-6 text-xl font-semibold transition-all duration-300 z-50`}
+        } absolute top-full left-0 w-full bg-background/95 backdrop-blur-[20px] border-b border-glass-border flex flex-col justify-center items-center py-8 space-y-6 text-xl font-semibold transition-all duration-300 z-50`}
       >
         <Link
           onClick={handleNav}
@@ -158,7 +158,7 @@ const Navbar = () => {
               href={siteConfig?.github_url || '#'}
               target="_blank"
               rel="noreferrer"
-              className="flex justify-between items-center w-full text-[#d7e3fd] hover:text-primary-container px-4 font-label-code"
+              className="flex justify-between items-center w-full text-on-surface hover:text-primary-container px-4 font-label-code"
             >
               GitHub <FaGithub size={20} className="text-primary-container" />
             </a>
@@ -169,7 +169,7 @@ const Navbar = () => {
               href={siteConfig?.linkedin_url || '#'}
               target="_blank"
               rel="noreferrer"
-              className="flex justify-between items-center w-full text-[#d7e3fd] hover:text-primary-container px-4 font-label-code"
+              className="flex justify-between items-center w-full text-on-surface hover:text-primary-container px-4 font-label-code"
             >
               LinkedIn <FaLinkedin size={20} className="text-primary-container" />
             </a>
@@ -178,7 +178,7 @@ const Navbar = () => {
           <li className="w-[140px] h-[50px] flex justify-between items-center ml-[-90px] hover:ml-0 duration-300 bg-glass-surface/85 backdrop-blur-md border border-glass-border rounded-r-lg hover:border-aurora-cyan mt-2">
             <a
               href={`mailto:${siteConfig?.email_address || ''}`}
-              className="flex justify-between items-center w-full text-[#d7e3fd] hover:text-primary-container px-4 font-label-code"
+              className="flex justify-between items-center w-full text-on-surface hover:text-primary-container px-4 font-label-code"
             >
               Email <MdEmail size={20} className="text-primary-container" />
             </a>
@@ -189,7 +189,7 @@ const Navbar = () => {
               href={siteConfig?.resume_url || '#'}
               target="_blank"
               rel="noreferrer"
-              className="flex justify-between items-center w-full text-[#d7e3fd] hover:text-primary-container px-4 font-label-code"
+              className="flex justify-between items-center w-full text-on-surface hover:text-primary-container px-4 font-label-code"
             >
               Resume <BsFillFileEarmarkPersonFill size={20} className="text-primary-container" />
             </a>

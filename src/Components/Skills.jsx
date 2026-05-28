@@ -72,15 +72,15 @@ const Skills = () => {
   const getGlowStyle = (name) => {
     const n = name.toLowerCase();
     if (n.includes('react') || n.includes('next') || n.includes('flutter') || n.includes('tailwind') || n.includes('js') || n.includes('javascript') || n.includes('css')) {
-      return 'bg-aurora-cyan group-hover:shadow-[0_0_20px_#00f2fe] border-primary-container/30';
+      return 'bg-aurora-cyan group-hover:shadow-[0_0_15px_rgba(217,119,6,0.3)] border-primary-container/30';
     }
     if (n.includes('laravel') || n.includes('php') || n.includes('html') || n.includes('git') || n.includes('red') || n.includes('firebase')) {
-      return 'bg-aurora-red group-hover:shadow-[0_0_20px_#ff3b30] border-status-error/30';
+      return 'bg-aurora-red group-hover:shadow-[0_0_15px_rgba(194,65,12,0.3)] border-status-error/30';
     }
     if (n.includes('supabase') || n.includes('mongo') || n.includes('sql') || n.includes('db') || n.includes('node') || n.includes('python')) {
-      return 'bg-emerald-500/10 group-hover:shadow-[0_0_20px_#10b981] border-emerald-500/30';
+      return 'bg-status-success/10 group-hover:shadow-[0_0_15px_rgba(132,204,22,0.3)] border-status-success/30';
     }
-    return 'bg-aurora-cyan group-hover:shadow-[0_0_20px_#00f2fe] border-primary-container/30';
+    return 'bg-aurora-cyan group-hover:shadow-[0_0_15px_rgba(217,119,6,0.3)] border-primary-container/30';
   };
 
   return (

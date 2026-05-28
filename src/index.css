@@ -4,8 +4,8 @@
 
 @layer base {
   body {
-    background-color: #071326;
-    color: #d7e3fd;
+    background-color: #faf8f5;
+    color: #1c1917;
     overflow-x: hidden;
     font-family: 'Inter', sans-serif;
   }
@@ -24,7 +24,7 @@
   height: 100%;
   z-index: -2;
   pointer-events: none;
-  background: #071326;
+  background: #faf8f5;
 }
 
 .aurora-bg {
@@ -35,16 +35,16 @@
   height: 100%;
   z-index: -1;
   overflow: hidden;
-  background: radial-gradient(circle at 20% 30%, rgba(0, 242, 254, 0.03) 0%, transparent 40%),
-              radial-gradient(circle at 80% 70%, rgba(255, 59, 48, 0.03) 0%, transparent 40%);
+  background: radial-gradient(circle at 20% 30%, rgba(217, 119, 6, 0.04) 0%, transparent 40%),
+              radial-gradient(circle at 80% 70%, rgba(194, 65, 12, 0.04) 0%, transparent 40%);
   pointer-events: none;
 }
 
 /* Glass Panel & Tilt/Glow Effect */
 .glass-panel {
-  background: rgba(11, 17, 37, 0.6);
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(28, 25, 23, 0.08);
   position: relative;
   overflow: hidden;
   transition: transform 0.1s ease-out, border-color 0.3s ease;
@@ -55,7 +55,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle 250px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 242, 254, 0.12), transparent);
+  background: radial-gradient(circle 250px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(217, 119, 6, 0.08), transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -67,7 +67,7 @@
 }
 
 .glass-panel:hover {
-  border-color: rgba(0, 242, 254, 0.4);
+  border-color: rgba(194, 65, 12, 0.3);
 }
 
 /* Entrance Animations */
@@ -105,8 +105,8 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: #00f2fe;
-  box-shadow: 0 0 8px #00f2fe;
+  background: #d97706;
+  box-shadow: 0 0 6px rgba(217, 119, 6, 0.3);
   transition: width 0.3s ease;
 }
 .nav-link:hover::after {
@@ -115,9 +115,9 @@
 
 /* Pulsing Glow */
 @keyframes pulse-glow {
-  0% { box-shadow: 0 0 10px rgba(255, 59, 48, 0.3); }
-  50% { box-shadow: 0 0 25px rgba(255, 59, 48, 0.6); }
-  100% { box-shadow: 0 0 10px rgba(255, 59, 48, 0.3); }
+  0% { box-shadow: 0 0 10px rgba(194, 65, 12, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(194, 65, 12, 0.4); }
+  100% { box-shadow: 0 0 10px rgba(194, 65, 12, 0.2); }
 }
 .btn-pulse {
   animation: pulse-glow 3s infinite ease-in-out;
@@ -144,25 +144,25 @@
 }
 
 .ai-markdown a {
-  color: #00f2fe;
+  color: #d97706;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 .ai-markdown code {
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(28, 25, 23, 0.08);
   border-radius: 0.25rem;
-  background: rgba(3, 14, 33, 0.7);
+  background: rgba(245, 242, 235, 0.7);
   padding: 0.1rem 0.3rem;
-  color: #e0fdff;
+  color: #1c1917;
   font-size: 0.85em;
 }
 
 .ai-markdown pre {
   overflow-x: auto;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(28, 25, 23, 0.08);
   border-radius: 0.5rem;
-  background: rgba(3, 14, 33, 0.8);
+  background: rgba(245, 242, 235, 0.8);
   padding: 0.75rem;
 }
 

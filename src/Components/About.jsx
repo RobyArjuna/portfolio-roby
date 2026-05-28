@@ -64,7 +64,7 @@ const About = () => {
       >
         <div className="absolute top-4 right-4 z-10 flex gap-2">
           {/* Pulsing Beacon coordinate */}
-          <span className="w-3.5 h-3.5 bg-status-success rounded-full shadow-[0_0_12px_#00f2fe] animate-pulse"></span>
+          <span className="w-3.5 h-3.5 bg-status-success rounded-full shadow-[0_0_12px_#84cc16] animate-pulse"></span>
         </div>
         <div>
           <h3 className="font-headline-md text-headline-md text-primary mb-2">Location</h3>
@@ -76,7 +76,7 @@ const About = () => {
             alt="Surabaya Map"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCK07Y2WkwCRcwceUwK0Xdw2-Uj_Fp1k2jHn5ULZkgujvjlx1GsNuHHT17aWbR9e-pK34HyZENPkeLe25HEZD601dVBZNRfxSrDk-f_Rm7xbgfBukSDjgMIPlAL41ZANt26bWUEjfWINUJlHFEycgW45PDI7j0LEQjzSACRu1t9WREwpKdC4EXiRKLDsf_atYirR3phlJC-Wz6bbRbZvD75C2zL3I0qeOtTG0p1TjkLtqQGJ7vCm9GIFIJuMT_MvT2SXJ97-3KnG309"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#071326]/80 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"></div>
         </div>
       </div>
 
@@ -92,7 +92,7 @@ const About = () => {
           As a dedicated <span className="text-primary-container font-semibold">Mobile Engineer & Full-Stack Engineer</span>, I specialize in crafting elegant, high-performance cross-platform applications with <span className="text-primary-container font-semibold">Flutter & Dart</span>. Beyond mobile development, I also build responsive Single Page Applications with <span className="text-primary-container font-semibold">React.js & Next.js</span>, architect robust backends with <span className="text-primary-container font-semibold">Laravel & Supabase</span>, and engineer custom real-time computer vision models using <span className="text-primary-container font-semibold">YOLOv8</span> & <span className="text-primary-container font-semibold">OpenCV</span>.
         </p>
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-          <div className="p-3 bg-aurora-cyan/20 rounded-lg border border-primary-container/40 shadow-[0_0_15px_rgba(0,242,254,0.25)] flex flex-col justify-center items-center">
+          <div className="p-3 bg-aurora-cyan/20 rounded-lg border border-primary-container/40 shadow-[0_0_15px_rgba(217,119,6,0.25)] flex flex-col justify-center items-center">
             <h4 className="text-primary font-bold text-headline-md">Flutter</h4>
             <span className="text-[10px] text-primary-container font-label-code uppercase font-extrabold tracking-wider">Mobile Specialist</span>
           </div>

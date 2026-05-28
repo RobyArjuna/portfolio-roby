@@ -105,9 +105,9 @@ const Work = () => {
                     />
                     {/* Live Demo Status indicator */}
                     {portfolio.link_demo && (
-                      <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#071326]/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-glass-border">
-                        <span className="w-2 h-2 bg-status-success rounded-full shadow-[0_0_8px_#00f2fe] animate-pulse"></span>
-                        <span className="text-[10px] font-label-code text-[#00f2fe] font-bold">LIVE</span>
+                      <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-background/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-glass-border">
+                        <span className="w-2 h-2 bg-status-success rounded-full shadow-[0_0_8px_#84cc16] animate-pulse"></span>
+                        <span className="text-[10px] font-label-code text-status-success font-bold">LIVE</span>
                       </div>
                     )}
                   </div>
@@ -173,7 +173,7 @@ const Work = () => {
             <div className="text-center my-12">
               <button
                 onClick={handleLoadMore}
-                className="px-8 py-4 border border-primary-container text-primary-container hover:bg-aurora-cyan font-bold rounded-lg uppercase transition-all duration-300 active:scale-95 shadow-[0_0_15px_rgba(0,242,254,0.1)]"
+                className="px-8 py-4 border border-primary-container text-primary-container hover:bg-aurora-cyan font-bold rounded-lg uppercase transition-all duration-300 active:scale-95 shadow-[0_0_15px_rgba(217,119,6,0.1)]"
               >
                 Load More Projects
               </button>

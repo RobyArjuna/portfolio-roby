@@ -41,9 +41,9 @@ const ParticleBackground = () => {
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 242, 254, ${this.opacity})`;
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = '#00f2fe';
+        ctx.fillStyle = `rgba(217, 119, 6, ${this.opacity})`;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#d97706';
         ctx.fill();
       }
     }
