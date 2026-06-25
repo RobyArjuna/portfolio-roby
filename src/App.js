@@ -85,7 +85,7 @@ function App() {
         </div>
       </footer>
 
-      <AiChatWidget />
+      {/* <AiChatWidget /> */}
     </div>
   );
 }
