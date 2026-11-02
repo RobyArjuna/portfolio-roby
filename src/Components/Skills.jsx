@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
-import { handleCardMouseMove, handleCardMouseLeave, initScrollReveal } from '../utils/cardEffects';
+import { FiCode } from 'react-icons/fi';
 
 const Skills = () => {
   const [skills, setSkills] = useState([]);
@@ -60,72 +60,33 @@ const Skills = () => {
     };
   }, []);
 
-  // Re-trigger scroll reveal when skills data renders
-  useEffect(() => {
-    if (!loading) {
-      // Re-scan DOM and attach observers to newly rendered dynamic elements
-      initScrollReveal();
-    }
-  }, [loading]);
-
-  // Helper to determine neon glow color based on skill name
-  const getGlowStyle = (name) => {
-    const n = name.toLowerCase();
-    if (n.includes('react') || n.includes('next') || n.includes('flutter') || n.includes('tailwind') || n.includes('js') || n.includes('javascript') || n.includes('css')) {
-      return 'bg-aurora-cyan group-hover:shadow-[0_0_15px_rgba(217,119,6,0.3)] border-primary-container/30';
-    }
-    if (n.includes('laravel') || n.includes('php') || n.includes('html') || n.includes('git') || n.includes('red') || n.includes('firebase')) {
-      return 'bg-aurora-red group-hover:shadow-[0_0_15px_rgba(194,65,12,0.3)] border-status-error/30';
-    }
-    if (n.includes('supabase') || n.includes('mongo') || n.includes('sql') || n.includes('db') || n.includes('node') || n.includes('python')) {
-      return 'bg-status-success/10 group-hover:shadow-[0_0_15px_rgba(132,204,22,0.3)] border-status-success/30';
-    }
-    return 'bg-aurora-cyan group-hover:shadow-[0_0_15px_rgba(217,119,6,0.3)] border-primary-container/30';
-  };
-
   return (
-    <section id="skills" name="skills" className="mt-section-gap select-none">
-      <h2 className="font-headline-lg text-headline-lg text-primary text-center mb-16 reveal">
-        Technical Expertise
-      </h2>
+    <section id="skills" className="scroll-mt-16 py-20 sm:py-28 border-b border-line">
+      <div className="mb-14 reveal">
+        <p className="eyebrow">(04) Toolkit</p>
+        <h2 className="font-display text-4xl sm:text-5xl mt-4 leading-tight">
+          Technical <em className="italic text-accent">expertise</em>
+        </h2>
+      </div>
 
       {loading ? (
-        <div className="flex justify-center items-center py-12">
-          <p className="text-body-lg text-on-surface-variant animate-pulse">Loading technical stacks...</p>
-        </div>
+        <p className="text-muted animate-pulse" aria-busy="true">Loading skills…</p>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 stagger-reveal">
+        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-l border-t border-line">
           {skills.map((skill) => (
-            <div
+            <li
               key={skill.id}
-              onMouseMove={handleCardMouseMove}
-              onMouseLeave={handleCardMouseLeave}
-              className="glass-panel p-6 rounded-xl flex flex-col items-center justify-center gap-4 group cursor-default"
+              className="border-r border-b border-line p-6 flex flex-col items-center gap-4 text-center hover:bg-surface-2 transition-colors"
             >
-              {/* Dynamic Logo frame */}
-              <div
-                className={`w-14 h-14 flex items-center justify-center rounded-lg border transition-all duration-300 p-2.5 ${getGlowStyle(
-                  skill.name
-                )}`}
-              >
-                {skill.icon_url ? (
-                  <img
-                    src={skill.icon_url}
-                    alt={skill.name}
-                    className="w-full h-full object-contain filter brightness-100 hover:scale-110 transition-transform duration-300"
-                  />
-                ) : (
-                  <span className="material-symbols-outlined text-primary text-2xl">
-                    terminal
-                  </span>
-                )}
-              </div>
-              <span className="text-label-code font-label-code text-on-surface-variant font-medium text-center">
-                {skill.name}
-              </span>
-            </div>
+              {skill.icon_url ? (
+                <img src={skill.icon_url} alt="" width="40" height="40" loading="lazy" className="w-10 h-10 object-contain" />
+              ) : (
+                <FiCode size={32} aria-hidden="true" className="text-muted" />
+              )}
+              <span className="font-mono text-xs uppercase tracking-wider">{skill.name}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </section>
   );

@@ -1,169 +1,100 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { supabase } from '../supabaseClient';
-import { FaTimes, FaGithub } from 'react-icons/fa';
-import { FiExternalLink } from 'react-icons/fi';
+import { FiX, FiArrowUpRight, FiGithub } from 'react-icons/fi';
 
-const ShowCard = ({ activeId, setShowCard, skills = [] }) => {
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState(null);
+export const toTechArray = (tech) =>
+  Array.isArray(tech) ? tech : tech?.split(',').map((t) => t.trim()).filter(Boolean) || [];
 
+const ShowCard = ({ project, onClose }) => {
+  const closeRef = useRef(null);
+
+  // Esc to close, lock page scroll, move focus into the dialog and restore it after.
   useEffect(() => {
-    async function getProjectDetails() {
-      if (!activeId) return;
+    const prevFocus = document.activeElement;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeRef.current?.focus();
 
-      setLoading(true);
-      setErrorMsg(null);
+    const onKey = (e) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+      prevFocus?.focus?.();
+    };
+  }, [onClose]);
 
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('id', activeId)
-        .single();
-
-      if (error) {
-        console.error('Error fetching project details:', error);
-        setErrorMsg('Failed to load project details. Please try again.');
-      } else {
-        setProject(data);
-      }
-      setLoading(false);
-    }
-
-    getProjectDetails();
-  }, [activeId]);
-
-  if (loading) {
-    return createPortal(
-      <div className="w-full h-screen fixed inset-0 z-[150] bg-background/85 backdrop-blur-md flex items-center justify-center font-body-md">
-        <div className="text-primary text-xl font-headline-md tracking-wide animate-pulse">
-          Retrieving details...
-        </div>
-      </div>,
-      document.body
-    );
-  }
-
-  if (errorMsg) {
-    return createPortal(
-      <div className="w-full h-screen fixed inset-0 z-[150] bg-background/85 backdrop-blur-md flex flex-col items-center justify-center font-body-md gap-4">
-        <div className="text-status-error text-xl font-headline-md">{errorMsg}</div>
-        <button
-          onClick={() => setShowCard(false)}
-          className="px-6 py-3 border border-status-error text-white font-bold rounded-lg uppercase hover:bg-aurora-red transition-all"
-        >
-          Close Panel
-        </button>
-      </div>,
-      document.body
-    );
-  }
-
-  if (!project) return null;
-
-  // Split technology string into a clean array
-  const techArray = Array.isArray(project.tech)
-    ? project.tech
-    : project.tech?.split(',').map((t) => t.trim()) || [];
+  const techArray = toTechArray(project.tech);
 
   return createPortal(
-    <div className="w-full h-screen fixed inset-0 z-[150] bg-background/80 backdrop-blur-md flex justify-center items-start p-4 overflow-y-auto py-8 sm:py-12">
-      {/* Modal Container */}
-      <div className="glass-panel max-w-[800px] w-full mx-auto rounded-2xl p-6 sm:p-8 relative border border-glass-border shadow-2xl animate-in fade-in zoom-in-95 duration-300">
-        
-        {/* Close Button */}
+    <div
+      className="fixed inset-0 z-[150] bg-ink/40 backdrop-blur-sm overflow-y-auto p-4 sm:p-8"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="project-title"
+        className="relative max-w-3xl mx-auto my-8 bg-bg text-ink border border-line"
+      >
         <button
-          onClick={() => setShowCard(false)}
-          className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center bg-surface-container-high border border-glass-border hover:border-aurora-cyan rounded-lg text-primary hover:text-white transition-all z-20 shadow-lg"
-          aria-label="Close details"
+          ref={closeRef}
+          type="button"
+          onClick={onClose}
+          aria-label="Close project details"
+          className="absolute top-3 right-3 z-10 w-11 h-11 inline-flex items-center justify-center rounded-full bg-bg/90 border border-line hover:bg-surface-2 transition-colors"
         >
-          <FaTimes size={18} />
+          <FiX size={20} aria-hidden="true" />
         </button>
 
-        {/* Project Image Frame */}
-        <div className="flex justify-center mb-6 overflow-hidden rounded-xl border border-glass-border bg-surface-container-lowest max-h-80 select-none shadow-md">
-          <img
-            className="rounded-xl w-full object-cover max-h-80 hover:scale-[1.02] transition-transform duration-500"
-            src={project.gambar_url}
-            alt={project.judul}
-          />
+        <div className="aspect-[16/9] bg-surface-2">
+          <img className="w-full h-full object-cover" src={project.gambar_url} alt="" />
         </div>
 
-        {/* Modal Headings */}
-        <h2 className="font-headline-lg text-headline-lg text-primary mb-3 select-none">
-          {project.judul}
-        </h2>
+        <div className="p-6 sm:p-10">
+          <p className="eyebrow">Project</p>
+          <h2 id="project-title" className="font-display text-3xl sm:text-4xl mt-3 leading-tight">
+            {project.judul}
+          </h2>
 
-        {/* Description Text */}
-        <p className="text-body-md text-on-surface-variant leading-relaxed mb-6 font-normal">
-          {project.desc}
-        </p>
+          <p className="mt-6 text-muted leading-relaxed whitespace-pre-line">{project.desc}</p>
 
-        {/* Dynamic Tech Tags */}
-        {techArray.length > 0 && (
-          <div className="mb-8 select-none">
-            <h4 className="text-sm font-label-caps tracking-wider text-primary mb-3 uppercase">
-              Technologies Used
-            </h4>
-            <div className="flex flex-wrap gap-2.5">
-              {techArray.map((item, idx) => {
-                const name = item.trim().toLowerCase();
-                let matchingSkill = null;
-                if (skills.length > 0) {
-                  if (name === 'react') matchingSkill = skills.find((s) => s.name.toLowerCase() === 'reactjs');
-                  else if (name === 'tailwind') matchingSkill = skills.find((s) => s.name.toLowerCase() === 'tailwind css');
-                  else if (name === 'js') matchingSkill = skills.find((s) => s.name.toLowerCase() === 'javascript');
-                  else if (name === 'flutter') matchingSkill = skills.find((s) => s.name.toLowerCase() === 'dart');
-                  else {
-                    matchingSkill = skills.find((s) => {
-                      const sName = s.name.toLowerCase();
-                      return sName.includes(name) || name.includes(sName);
-                    });
-                  }
-                }
-
-                return (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-label-code border border-primary-container/30 text-primary-container rounded-lg bg-aurora-cyan/30 uppercase font-bold transition-all hover:bg-aurora-cyan/50"
-                  >
-                    {matchingSkill?.icon_url && (
-                      <img
-                        src={matchingSkill.icon_url}
-                        alt={item}
-                        className="w-4 h-4 object-contain filter brightness-100"
-                      />
-                    )}
-                    <span>{item}</span>
-                  </span>
-                );
-              })}
+          {techArray.length > 0 && (
+            <div className="mt-8 pt-6 border-t border-line">
+              <h3 className="eyebrow mb-3">Technologies</h3>
+              <ul className="flex flex-wrap gap-2">
+                {techArray.map((item) => (
+                  <li key={item} className="px-3 py-1.5 rounded-full border border-line font-mono text-xs uppercase tracking-wider">
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
-        )}
-
-        {/* Action Button Links */}
-        <div className="flex flex-wrap gap-4 pt-2 select-none">
-          {project.link_demo && (
-            <a
-              href={project.link_demo}
-              target="_blank"
-              rel="noreferrer"
-              className="px-6 py-3.5 bg-primary-container text-on-primary font-bold rounded-lg uppercase shadow-[0_0_15px_rgba(217,119,6,0.3)] hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 font-label-code text-sm"
-            >
-              Live Demo <FiExternalLink size={16} />
-            </a>
           )}
-          {project.link_github && (
-            <a
-              href={project.link_github}
-              target="_blank"
-              rel="noreferrer"
-              className="px-6 py-3.5 border border-primary-container text-primary-container font-bold rounded-lg uppercase hover:bg-aurora-cyan transition-all hover:scale-[1.02] active:scale-95 flex items-center gap-2 font-label-code text-sm"
-            >
-              GitHub Source <FaGithub size={16} />
-            </a>
+
+          {(project.link_demo || project.link_github) && (
+            <div className="mt-8 flex flex-wrap gap-3">
+              {project.link_demo && (
+                <a
+                  href={project.link_demo}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 min-h-[44px] px-6 rounded-full bg-ink text-bg font-medium hover:bg-accent hover:text-accent-ink transition-colors"
+                >
+                  Live demo <FiArrowUpRight aria-hidden="true" />
+                </a>
+              )}
+              {project.link_github && (
+                <a
+                  href={project.link_github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 min-h-[44px] px-6 rounded-full border border-ink/20 font-medium hover:border-ink transition-colors"
+                >
+                  <FiGithub aria-hidden="true" /> Source code
+                </a>
+              )}
+            </div>
           )}
         </div>
       </div>

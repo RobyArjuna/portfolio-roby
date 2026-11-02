@@ -1,191 +1,119 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FiArrowUpRight } from 'react-icons/fi';
 import { supabase } from '../supabaseClient';
-import ShowCard from './ShowCard';
-import { handleCardMouseMove, handleCardMouseLeave, initScrollReveal } from '../utils/cardEffects';
+import ShowCard, { toTechArray } from './ShowCard';
 
 const Work = () => {
   const [nextItems, setNextItems] = useState(6);
   const [portfolios, setPortfolios] = useState([]);
-  const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showCard, setShowCard] = useState(false);
-  const [activeId, setActiveId] = useState(null);
+  const [active, setActive] = useState(null);
+  const closeCard = useCallback(() => setActive(null), []);
 
   useEffect(() => {
     async function getData() {
-      setLoading(true);
-      const [projectsRes, skillsRes] = await Promise.all([
-        supabase.from('projects').select('*').order('id', { ascending: false }),
-        supabase.from('skills').select('*').order('order', { ascending: true })
-      ]);
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('id', { ascending: false });
 
-      if (projectsRes.error) {
-        console.error('❌ Error fetching projects:', projectsRes.error.message);
+      if (error) {
+        console.error('Error fetching projects:', error.message);
       } else {
-        setPortfolios(projectsRes.data || []);
+        setPortfolios(data || []);
       }
-
-      if (skillsRes.error) {
-        console.error('❌ Error fetching skills:', skillsRes.error.message);
-      } else {
-        setSkills(skillsRes.data || []);
-      }
-
       setLoading(false);
     }
     getData();
   }, []);
 
-  const findSkillMatch = (techName) => {
-    if (!techName) return null;
-    const name = techName.trim().toLowerCase();
-
-    // Map common names/abbreviations to DB skills
-    if (name === 'react') return skills.find((s) => s.name.toLowerCase() === 'reactjs');
-    if (name === 'tailwind') return skills.find((s) => s.name.toLowerCase() === 'tailwind css');
-    if (name === 'js') return skills.find((s) => s.name.toLowerCase() === 'javascript');
-    if (name === 'flutter') return skills.find((s) => s.name.toLowerCase() === 'dart');
-
-    return skills.find((s) => {
-      const sName = s.name.toLowerCase();
-      return sName.includes(name) || name.includes(sName);
-    });
-  };
-
-  // Re-trigger scroll reveal when projects render
-  useEffect(() => {
-    if (!loading) {
-      initScrollReveal();
-    }
-  }, [loading]);
-
-  const handleLoadMore = () => setNextItems((prev) => prev + 3);
-  const handleShowCard = (id) => {
-    setShowCard(true);
-    setActiveId(id);
-  };
-
   return (
-    <section id="projects" name="work" className="mt-section-gap relative select-none">
-      {/* Header Info */}
-      <div className="flex justify-between items-end mb-12 reveal">
+    <section id="projects" className="scroll-mt-16 py-20 sm:py-28 border-b border-line">
+      <div className="flex flex-wrap items-end justify-between gap-6 mb-14 reveal">
         <div>
-          <h2 className="font-headline-lg text-headline-lg text-primary">Featured Projects</h2>
-          <p className="text-on-surface-variant font-label-caps mt-2">SELECTED WORKS & EXPERIENCES</p>
+          <p className="eyebrow">(03) Selected work</p>
+          <h2 className="font-display text-4xl sm:text-5xl mt-4 leading-tight">
+            Featured <em className="italic text-accent">projects</em>
+          </h2>
         </div>
+        {!loading && (
+          <p className="eyebrow">{String(portfolios.length).padStart(2, '0')} projects</p>
+        )}
       </div>
 
       {loading ? (
-        <div className="flex justify-center items-center py-12">
-          <p className="text-body-lg text-on-surface-variant animate-pulse">Loading featured projects...</p>
+        <div className="grid md:grid-cols-2 gap-x-10 gap-y-16" aria-busy="true" aria-label="Loading projects">
+          {[0, 1].map((i) => (
+            <div key={i} className="animate-pulse">
+              <div className="aspect-[16/10] bg-surface-2" />
+              <div className="h-7 w-2/3 bg-surface-2 mt-6" />
+              <div className="h-4 w-full bg-surface-2 mt-4" />
+            </div>
+          ))}
         </div>
       ) : (
         <>
-          {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-grid-gutter stagger-reveal">
-            {portfolios.slice(0, nextItems).map((portfolio) => {
-              // Parse technology list cleanly
-              const techArray = Array.isArray(portfolio.tech)
-                ? portfolio.tech
-                : portfolio.tech?.split(',').map((t) => t.trim()) || [];
+          <div className="grid md:grid-cols-2 gap-x-10 gap-y-16">
+            {portfolios.slice(0, nextItems).map((portfolio, i) => {
+              const techArray = toTechArray(portfolio.tech);
 
               return (
-                <div
-                  key={portfolio.id}
-                  onMouseMove={handleCardMouseMove}
-                  onMouseLeave={handleCardMouseLeave}
-                  className="glass-panel group rounded-xl overflow-hidden flex flex-col justify-between"
-                >
-                  {/* Thumbnail Cover */}
-                  <div className="relative h-56 sm:h-64 overflow-hidden border-b border-glass-border">
+                <article key={portfolio.id} className="group relative">
+                  <div className="aspect-[16/10] overflow-hidden bg-surface-2">
                     <img
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                       src={portfolio.gambar_url}
-                      alt={portfolio.judul}
+                      alt=""
+                      loading="lazy"
                     />
-                    {/* Live Demo Status indicator */}
-                    {portfolio.link_demo && (
-                      <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-background/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-glass-border">
-                        <span className="w-2 h-2 bg-status-success rounded-full shadow-[0_0_8px_#84cc16] animate-pulse"></span>
-                        <span className="text-[10px] font-label-code text-status-success font-bold">LIVE</span>
-                      </div>
-                    )}
                   </div>
 
-                  {/* Body Content */}
-                  <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between">
-                    <div>
-                      <h4 className="font-headline-md text-headline-md text-primary mb-2 line-clamp-1">
-                        {portfolio.judul}
-                      </h4>
-                      <p className="text-body-md text-on-surface-variant mb-6 line-clamp-3 leading-relaxed">
-                        {portfolio.desc}
-                      </p>
-                    </div>
-
-                    <div>
-                      {/* Tech Badge Grid */}
-                      <div className="flex flex-wrap gap-2 mb-6 select-none">
-                        {techArray.slice(0, 3).map((tech, idx) => {
-                          const matchingSkill = findSkillMatch(tech);
-                          return (
-                            <span
-                              key={idx}
-                              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-label-code border border-primary-container/30 text-primary-container rounded bg-aurora-cyan/30 uppercase font-bold transition-all hover:bg-aurora-cyan/50"
-                            >
-                              {matchingSkill?.icon_url && (
-                                <img
-                                  src={matchingSkill.icon_url}
-                                  alt={tech}
-                                  className="w-3.5 h-3.5 object-contain filter brightness-100"
-                                />
-                              )}
-                              <span>{tech}</span>
-                            </span>
-                          );
-                        })}
-                        {techArray.length > 3 && (
-                          <span className="px-2.5 py-1 text-[10px] font-label-code border border-glass-border text-on-surface-variant rounded bg-surface-container-high font-bold">
-                            +{techArray.length - 3} MORE
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Detail CTA Button */}
-                      <button
-                        onClick={() => handleShowCard(portfolio.id)}
-                        className="inline-flex items-center text-primary-container hover:underline gap-2 font-label-code font-bold group/btn transition-colors hover:text-white"
-                      >
-                        VIEW DETAILS{' '}
-                        <span className="material-symbols-outlined text-sm transition-transform group-hover/btn:translate-x-1 duration-200">
-                          arrow_forward
-                        </span>
-                      </button>
+                  <div className="mt-6 flex gap-5">
+                    <span className="font-mono text-sm text-muted pt-1.5">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-display text-2xl sm:text-3xl leading-tight">
+                        <button
+                          type="button"
+                          onClick={() => setActive(portfolio)}
+                          className="text-left after:absolute after:inset-0"
+                        >
+                          {portfolio.judul}
+                        </button>
+                        <FiArrowUpRight
+                          aria-hidden="true"
+                          className="inline ml-2 align-baseline text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
+                        />
+                      </h3>
+                      <p className="mt-3 text-muted leading-relaxed line-clamp-2">{portfolio.desc}</p>
+                      {techArray.length > 0 && (
+                        <p className="mt-4 font-mono text-xs uppercase tracking-wider text-muted">
+                          {techArray.join(' · ')}
+                        </p>
+                      )}
                     </div>
                   </div>
-                </div>
+                </article>
               );
             })}
           </div>
 
-          {/* Load More Button */}
-          {nextItems < portfolios.length && portfolios.length > 6 && (
-            <div className="text-center my-12">
+          {nextItems < portfolios.length && (
+            <div className="text-center mt-16">
               <button
-                onClick={handleLoadMore}
-                className="px-8 py-4 border border-primary-container text-primary-container hover:bg-aurora-cyan font-bold rounded-lg uppercase transition-all duration-300 active:scale-95 shadow-[0_0_15px_rgba(217,119,6,0.1)]"
+                type="button"
+                onClick={() => setNextItems((prev) => prev + 4)}
+                className="min-h-[44px] px-6 rounded-full border border-ink/20 font-medium hover:border-ink transition-colors"
               >
-                Load More Projects
+                Load more projects
               </button>
             </div>
           )}
         </>
       )}
 
-      {/* Dynamic ShowCard Modal */}
-      {showCard && (
-        <ShowCard setShowCard={setShowCard} activeId={activeId} skills={skills} />
-      )}
+      {active && <ShowCard project={active} onClose={closeCard} />}
     </section>
   );
 };

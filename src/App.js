@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
-import './App.css';
 import About from './Components/About';
 import Contact from './Components/Contact';
 import Home from './Components/Home';
 import Navbar from './Components/Navbar';
 import Skills from './Components/Skills';
 import Work from './Components/Work';
-import ParticleBackground from './Components/ParticleBackground';
 import { initScrollReveal } from './utils/cardEffects';
 import { supabase } from './supabaseClient';
 // import { AiChatWidget } from './ai';
@@ -15,13 +13,14 @@ function App() {
   const [siteConfig, setSiteConfig] = React.useState(null);
 
   useEffect(() => {
-    // Initialize Scroll Reveal observers
     const observer = initScrollReveal();
 
-    // Fetch Site Config globally to distribute where needed (e.g. Footer)
+    // Fetched once here and passed down to every section that needs links.
     async function getConfig() {
       const { data, error } = await supabase.from('site_config').select('*').single();
-      if (!error && data) {
+      if (error) {
+        console.error('Error fetching site configuration:', error);
+      } else if (data) {
         setSiteConfig(data);
       }
     }
@@ -32,56 +31,53 @@ function App() {
     };
   }, []);
 
-  return (
-    <div className="font-body-md text-on-surface antialiased bg-background min-h-screen relative">
-      {/* Dynamic Backgrounds */}
-      <ParticleBackground />
+  const githubUrl = siteConfig?.github_url || 'https://github.com/RobyArjuna';
+  const linkedinUrl = siteConfig?.linkedin_url || 'https://www.linkedin.com/in/RobyArjuna';
 
-      {/* Floating Glass Navbar */}
+  return (
+    <div className="min-h-screen">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:bg-ink focus:text-bg focus:px-4 focus:py-2"
+      >
+        Skip to content
+      </a>
+
       <Navbar />
 
-      {/* Main Structural Wrapper */}
-      <main className="max-w-container-max mx-auto px-grid-margin relative">
-        <Home />
+      <main id="main" className="max-w-page mx-auto px-4 sm:px-8">
+        <Home siteConfig={siteConfig} />
         <About />
         <Work />
         <Skills />
-        <Contact />
+        <Contact siteConfig={siteConfig} />
       </main>
 
-      {/* Premium Footer */}
-      <footer className="w-full bg-surface-container-lowest border-t border-glass-border relative z-10 mt-section-gap">
-        <div className="flex flex-col md:flex-row justify-between items-center py-12 px-grid-margin max-w-container-max mx-auto gap-8">
-          <div className="text-headline-md font-headline-md text-primary">Roby Arjuna</div>
-          <div className="text-body-md font-body-md text-on-surface-variant text-center md:text-left">
-            © 2026 Roby Arjuna.
+      <footer className="border-t border-line">
+        <div className="max-w-page mx-auto px-4 sm:px-8 py-10 flex flex-col sm:flex-row gap-6 justify-between sm:items-center">
+          <div>
+            <p className="font-display text-xl">Roby Arjuna</p>
+            <p className="eyebrow mt-1">© {new Date().getFullYear()} · Surabaya, Indonesia</p>
           </div>
-          <div className="flex gap-6 text-label-code font-label-code">
-            <a 
-              className="text-on-surface-variant hover:text-primary transition-colors" 
-              href={siteConfig?.github_url || "https://github.com/robyarjuna"} 
-              target="_blank" 
-              rel="noreferrer"
-            >
-              GitHub
-            </a>
-            <a 
-              className="text-on-surface-variant hover:text-primary transition-colors" 
-              href={siteConfig?.linkedin_url || "https://linkedin.com/in/robyarjuna"} 
-              target="_blank" 
-              rel="noreferrer"
-            >
-              LinkedIn
-            </a>
-            <a 
-              className="text-on-surface-variant hover:text-primary transition-colors" 
-              href={siteConfig?.resume_url || "#"} 
-              target="_blank" 
-              rel="noreferrer"
-            >
-              Resume
-            </a>
-          </div>
+          <ul className="flex gap-6 text-sm">
+            <li>
+              <a className="link-underline text-muted hover:text-ink" href={githubUrl} target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a className="link-underline text-muted hover:text-ink" href={linkedinUrl} target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>
+            </li>
+            {siteConfig?.resume_url && (
+              <li>
+                <a className="link-underline text-muted hover:text-ink" href={siteConfig.resume_url} target="_blank" rel="noreferrer">
+                  Resume
+                </a>
+              </li>
+            )}
+          </ul>
         </div>
       </footer>
 

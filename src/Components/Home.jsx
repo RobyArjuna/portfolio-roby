@@ -1,154 +1,96 @@
-import React, { useEffect, useState } from 'react';
-import { HiArrowNarrowRight } from 'react-icons/hi';
+import React from 'react';
+import { FiArrowDownRight, FiArrowUpRight } from 'react-icons/fi';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
-import { Link } from 'react-scroll';
-import { supabase } from '../supabaseClient';
 import myPhoto from '../asset/noformal.png';
 
-const TypingEffect = ({ texts, speed = 150, pause = 1500 }) => {
-  const [displayText, setDisplayText] = useState('');
-  const [index, setIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
+const ROLES = ['Mobile Developer', 'Software Engineer', 'Web Developer', 'ML Enthusiast'];
 
-  useEffect(() => {
-    const currentText = texts[index % texts.length];
-    let timeout;
-
-    if (!isDeleting && displayText.length < currentText.length) {
-      timeout = setTimeout(() => {
-        setDisplayText(currentText.substring(0, displayText.length + 1));
-      }, speed);
-    } else if (isDeleting && displayText.length > 0) {
-      timeout = setTimeout(() => {
-        setDisplayText(currentText.substring(0, displayText.length - 1));
-      }, speed / 2);
-    } else {
-      timeout = setTimeout(() => {
-        setIsDeleting(!isDeleting);
-        if (!isDeleting) {
-          setIndex(index + 1);
-        }
-      }, pause);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, index, texts, speed, pause]);
+const Home = ({ siteConfig }) => {
+  const githubUrl = siteConfig?.github_url || 'https://github.com/RobyArjuna';
+  const linkedinUrl = siteConfig?.linkedin_url || 'https://www.linkedin.com/in/RobyArjuna';
 
   return (
-    <span className="text-primary-container border-r-2 border-primary-container animate-pulse pr-1">
-      {displayText}
-    </span>
-  );
-};
-
-const Home = () => {
-  const [siteConfig, setSiteConfig] = useState(null);
-
-  useEffect(() => {
-    async function getConfig() {
-      const { data, error } = await supabase.from('site_config').select('*').single();
-      if (!error && data) {
-        setSiteConfig(data);
-      }
-    }
-    getConfig();
-  }, []);
-
-  return (
-    <section
-      id="intro"
-      name="home"
-      className="min-h-fit md:min-h-[65vh] flex flex-col md:flex-row items-center justify-between pt-4 pb-12 md:pt-6 gap-12 reveal"
-    >
-      {/* Left Column: Text & CTAs */}
-      <div className="flex-1 flex flex-col items-start text-left">
-        {/* Availability Badge */}
-        <div className="inline-block px-4 py-1.5 rounded-full border border-primary-container/30 bg-aurora-cyan text-primary-container text-label-code font-label-code mb-6 select-none animate-pulse">
-          🟢 AVAILABLE FOR NEW OPPORTUNITIES
-        </div>
-
-        {/* Name Heading */}
-        <h1 className="font-headline-lg text-display-lg-mobile md:text-display-lg text-primary tracking-tighter mb-4 leading-none select-none">
-          Roby Arjuna
-        </h1>
-
-        {/* Dynamic Typing Title */}
-        <h2 className="font-headline-md text-headline-md text-on-surface-variant mb-6 h-[40px] md:h-[48px] select-none">
-          I am a <TypingEffect texts={[
-            'Mobile Developer',
-            'Software Engineer',
-            'Web Developer',
-            'ML Enthusiast'
-          ]} />
-        </h2>
-
-        {/* Summary Description */}
-        <p className="text-body-lg text-on-surface-variant mb-8 max-w-xl leading-relaxed">
-          Architecting scalable digital experiences through precision engineering, dynamic integrations, and human-centered design principles.
-        </p>
-
-        {/* Buttons / CTAs */}
-        <div className="flex flex-wrap gap-4 mb-6">
-          <Link
-            to="projects"
-            smooth={true}
-            duration={1000}
-            className="btn-pulse px-8 py-4 bg-status-error text-white font-bold rounded-lg uppercase transition-transform hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-2 select-none"
-          >
-            View My Work <HiArrowNarrowRight />
-          </Link>
-          {siteConfig?.resume_url && (
-            <a
-              href={siteConfig.resume_url}
-              target="_blank"
-              rel="noreferrer"
-              className="px-8 py-4 border border-primary-container text-primary-container font-bold rounded-lg uppercase hover:bg-aurora-cyan transition-all active:scale-95 flex items-center select-none"
-            >
-              Download Resume
-            </a>
-          )}
-        </div>
-
-        {/* Quick Social Badges */}
-        <div className="flex gap-4 items-center">
-          <a
-            href={siteConfig?.github_url || "https://github.com/robyarjuna"}
-            target="_blank"
-            rel="noreferrer"
-            className="text-on-surface-variant hover:text-primary transition-all duration-300 p-2 bg-surface-container/50 rounded-full border border-glass-border hover:border-aurora-cyan"
-            aria-label="GitHub"
-          >
-            <FaGithub size={22} />
-          </a>
-          <a
-            href={siteConfig?.linkedin_url || "https://linkedin.com/in/robyarjuna"}
-            target="_blank"
-            rel="noreferrer"
-            className="text-on-surface-variant hover:text-primary transition-all duration-300 p-2 bg-surface-container/50 rounded-full border border-glass-border hover:border-aurora-cyan"
-            aria-label="LinkedIn"
-          >
-            <FaLinkedin size={22} />
-          </a>
-        </div>
+    <section id="intro" className="scroll-mt-16 pt-12 sm:pt-20 pb-20 sm:pb-28 border-b border-line reveal">
+      <div className="flex flex-wrap gap-4 items-center justify-between eyebrow mb-10 sm:mb-16">
+        <span>(01) Intro</span>
+        <span className="inline-flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-emerald-500" aria-hidden="true" />
+          Available for new opportunities
+        </span>
       </div>
 
-      {/* Right Column: Premium Glowing Avatar */}
-      <div className="flex-1 flex justify-center items-center relative select-none">
-        {/* Glow Spheres in Background */}
-        <div className="absolute w-72 h-72 bg-aurora-cyan rounded-full blur-[80px] -z-10 animate-pulse"></div>
-        <div className="absolute w-48 h-48 bg-status-error/10 rounded-full blur-[60px] -z-10 animate-bounce duration-[10s]"></div>
+      <div className="grid md:grid-cols-12 gap-12 md:gap-10 items-end">
+        <div className="md:col-span-8">
+          <h1 className="font-display font-medium text-[clamp(3.5rem,11vw,8.5rem)] leading-[0.92] tracking-tight">
+            Roby
+            <br />
+            <em className="italic font-normal text-accent">Arjuna</em>
+          </h1>
 
-        {/* Frame Container */}
-        <div className="relative p-3 rounded-full bg-glass-surface border border-glass-border shadow-2xl backdrop-blur-md hover:border-primary-container/40 transition-colors duration-500">
-          {/* Animated gradient ring */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary-container via-transparent to-status-error opacity-40 animate-spin duration-[20s] -z-10"></div>
-          
-          <img
-            src={myPhoto}
-            alt="Roby Arjuna"
-            className="w-[200px] h-[200px] sm:w-[250px] sm:h-[250px] md:w-[300px] md:h-[300px] object-cover rounded-full shadow-inner relative z-10"
-          />
+          <p className="mt-8 font-mono text-xs sm:text-sm uppercase tracking-[0.14em] text-muted">
+            {ROLES.join(' / ')}
+          </p>
+
+          <p className="mt-6 text-lg sm:text-xl leading-relaxed max-w-xl">
+            Architecting scalable digital experiences through precision engineering, dynamic
+            integrations, and human-centered design principles.
+          </p>
+
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href="#projects"
+              className="inline-flex items-center gap-2 min-h-[44px] px-6 rounded-full bg-ink text-bg font-medium hover:bg-accent hover:text-accent-ink transition-colors"
+            >
+              View selected work <FiArrowDownRight aria-hidden="true" />
+            </a>
+            {siteConfig?.resume_url && (
+              <a
+                href={siteConfig.resume_url}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 min-h-[44px] px-6 rounded-full border border-ink/20 font-medium hover:border-ink transition-colors"
+              >
+                Resume <FiArrowUpRight aria-hidden="true" />
+              </a>
+            )}
+            <div className="flex gap-1 ml-1">
+              <a
+                href={githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub"
+                className="w-11 h-11 inline-flex items-center justify-center rounded-full text-muted hover:text-ink transition-colors"
+              >
+                <FaGithub size={20} aria-hidden="true" />
+              </a>
+              <a
+                href={linkedinUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn"
+                className="w-11 h-11 inline-flex items-center justify-center rounded-full text-muted hover:text-ink transition-colors"
+              >
+                <FaLinkedin size={20} aria-hidden="true" />
+              </a>
+            </div>
+          </div>
         </div>
+
+        <figure className="md:col-span-4 max-w-xs md:max-w-none">
+          <div className="aspect-[4/5] overflow-hidden bg-surface-2">
+            <img
+              src={myPhoto}
+              alt="Portrait of Roby Arjuna"
+              width="480"
+              height="600"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <figcaption className="eyebrow mt-3 flex justify-between">
+            <span>Roby Arjuna Wijaya</span>
+            <span>Surabaya, ID</span>
+          </figcaption>
+        </figure>
       </div>
     </section>
   );
